@@ -1,0 +1,10 @@
+*.coverage
+*.egg-info/
+*.pyc
+*coverage/
+.pytest_cache/
+app_media/
+app_static/
+db.sqlite
+dist/
+build/
