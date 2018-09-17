@@ -25,7 +25,7 @@ setup(
     include_package_data=True,
     license='MIT License',
     description=
-    'A GraphQL endpoint to signup or login a valid user access token from Facebook',
+    'A GraphQL endpoint and authentication backend to signup or login a valid user access token from Facebook',
     long_description=README,
     url='https://github.com/theartling/django-facebook-login/',
     author='Martin Brochhaus',
@@ -37,7 +37,7 @@ setup(
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
-        'Framework :: Django :: 2.1',
+        'Framework :: Django :: 2.0',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
