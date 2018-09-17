@@ -31,6 +31,7 @@ class FacebookAuthBackend:
         if token_info.get('error'):
             return None
 
+        # Step1: See if we already know this Facebook user...
         user_id = token_info['data']['user_id']
         user = None
         fb_account = None
@@ -41,6 +42,7 @@ class FacebookAuthBackend:
         except FacebookAccount.DoesNotExist:
             pass
 
+        # Step2: Unknown FB user, see if we already know this email...
         User = get_user_model()
         try:
             user = User.objects.get(email=email)
@@ -51,6 +53,7 @@ class FacebookAuthBackend:
         except User.DoesNotExist:
             pass
 
+        # Step3: Unknown FB user and email, let's create a new user...
         user = User.objects.create(username=str(uuid.uuid4()), email=email)
         fb_account = FacebookAccount.objects.create(
             user=user, fb_user_id=user_id)

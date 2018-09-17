@@ -1,6 +1,7 @@
 import pytest
 import responses
 
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.test import RequestFactory
@@ -17,10 +18,12 @@ def test_success_handler_default():
     req.user = AnonymousUser()
     SessionMiddleware().process_request(req)
     req.session.save()
+
     # before our test, the request user is anonymous
     assert req.user.is_authenticated is False
 
     user = mixer.blend('auth.User')
+    user.backend = 'facebook_login.auth_backends.FacebookAuthBackend'
     res = utils.success_handler_default(req, user)
     # after our test, the request has the authenticated user attached
     assert req.user == user

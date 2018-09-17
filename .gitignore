@@ -7,4 +7,5 @@ app_media/
 app_static/
 db.sqlite
 dist/
+htmlcov/
 build/

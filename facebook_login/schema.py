@@ -33,10 +33,18 @@ class FacebookAuthMutation(graphene.Mutation):
                         ' your email address.'
                     ]
                 }),
-                token=None)
+            )
 
         user = authenticate(
             request=info.context, email=email, token=user_access_token)
+        if user is None:
+            return FacebookAuthMutation(
+                status=400,
+                form_errors=json.dumps({
+                    'facebook': ['Facebook login failed.']
+                }),
+            )
+
         success_handler(info.context, user)
         return FacebookAuthMutation(status=200, form_errors=None)
 

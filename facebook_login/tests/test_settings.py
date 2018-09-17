@@ -50,6 +50,11 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
 ]
 
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",
+    "facebook_login.auth_backends.FacebookAuthBackend",
+)
+
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(APP_ROOT, '../app_static')
 MEDIA_ROOT = os.path.join(APP_ROOT, '../app_media')

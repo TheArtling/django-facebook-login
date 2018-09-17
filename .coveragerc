@@ -1,2 +1,2 @@
 [run]
-omit = facebook_login/tests/*, facebook_login/settings.py
+omit = facebook_login/tests/*, facebook_login/migrations/*, facebook_login/settings.py
