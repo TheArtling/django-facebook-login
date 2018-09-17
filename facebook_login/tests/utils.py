@@ -1,5 +1,6 @@
 import responses
 
+from django.contrib.auth import login
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.test import RequestFactory
@@ -84,3 +85,15 @@ def setup_debug_token_responses_error():
             'error': 'Oh Oh!'
         },
         status=200)
+
+
+def success_handler(request, user):
+    """
+    Logs in the user that has been queried or created by the
+    FacebookAuthMutation.
+
+    """
+    login(request, user)
+    res = {'mock': 'token'}
+    print(res)
+    return res
