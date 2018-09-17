@@ -13,6 +13,7 @@ dev_requires = [
     'pytest',
     'pytest-django',
     'pytest-cov',
+    'responses',
     'fabric',
     'mixer',
 ]

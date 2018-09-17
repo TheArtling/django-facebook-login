@@ -56,3 +56,6 @@ MEDIA_ROOT = os.path.join(APP_ROOT, '../app_media')
 STATICFILES_DIRS = (os.path.join(APP_ROOT, 'static'),)
 
 SECRET_KEY = 'foobar'
+
+FB_LOGIN_APP_ID = 'TEST_APP_ID'
+FB_LOGIN_APP_SECRET = 'TEST_APP_SECRET'
