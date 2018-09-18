@@ -1,8 +1,6 @@
 import pytest
 import responses
 
-from unittest.mock import MagicMock
-
 from . import utils
 from .. import schema
 
@@ -35,8 +33,12 @@ class TestFacebookAuthMutation:
             'Should return None if success handler not specified')
 
     @responses.activate
-    def test_success_handler(self):
-        schema.success_handler = MagicMock(return_value={'bla': 'token'})
+    def test_custom_success_handler_with_extra_data(self):
+        # monkeypatching the setting
+        from facebook_login import settings
+        old = settings.SUCCESS_HANDLER
+        settings.SUCCESS_HANDLER = 'facebook_login.tests.utils.custom_success_handler'
+
         m = schema.FacebookAuthMutation()
         utils.setup_access_token_responses()
         utils.setup_debug_token_responses_success()
@@ -50,3 +52,6 @@ class TestFacebookAuthMutation:
 
         assert 'token' in res.extra, (
             'Should return extra data from success handler')
+
+        # undo monkeypatching
+        settings.SUCCESS_HANDLER = old

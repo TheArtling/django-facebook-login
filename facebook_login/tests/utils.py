@@ -85,3 +85,8 @@ def setup_debug_token_responses_error():
             'error': 'Oh Oh!'
         },
         status=200)
+
+
+def custom_success_handler(request, user):
+    login(request, user)
+    return {'extra': 'token'}
