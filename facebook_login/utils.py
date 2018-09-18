@@ -13,13 +13,14 @@ def success_handler_default(request, user):
 
     """
     login(request, user)
+    return None
 
 
 def success_handler(request, user):  # pragma: nocover
     # too trivial to test
     """Imports and then calls the success handler function."""
     success_handler_func = import_string(settings.SUCCESS_HANDLER)
-    success_handler_func(request, user)
+    return success_handler_func(request, user)
 
 
 def get_app_access_token():
