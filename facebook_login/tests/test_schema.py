@@ -1,10 +1,7 @@
 import pytest
 import responses
 
-from django.conf import settings
-from django.test import TestCase, override_settings
 from unittest.mock import MagicMock
-from mixer.backend.django import mixer
 
 from . import utils
 from .. import schema
@@ -12,7 +9,7 @@ from .. import schema
 pytestmark = pytest.mark.django_db
 
 
-class TestFacebookAuthMutation(TestCase):
+class TestFacebookAuthMutation:
 
     @responses.activate
     def test_mutate(self):

@@ -19,7 +19,6 @@ def success_handler_default(request, user):
 def success_handler(request, user):  # pragma: nocover
     # too trivial to test
     """Imports and then calls the success handler function."""
-    print('success_handler', settings.SUCCESS_HANDLER)
     success_handler_func = import_string(settings.SUCCESS_HANDLER)
     return success_handler_func(request, user)
 
