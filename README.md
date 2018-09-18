@@ -20,7 +20,7 @@ library.
 
 1.  Add "facebook-login" to your INSTALLED_APPS setting like this:
 
-    ```
+    ```py
     INSTALLED_APPS = [
         ...
         'facebook-login',
@@ -29,7 +29,7 @@ library.
 
 1.  Add the `FacebookAuthBackend` to your `AUTHENTICATION_BACKENDS` setting:
 
-    ```
+    ```py
     AUTHENTICATION_BACKENDS = (
         ...,
         "facebook_login.auth_backends.FacebookAuthBackend",
@@ -38,7 +38,7 @@ library.
 
 1.  Hook up the mutation in your GraphQL schema:
 
-    ```
+    ```py
     # in your main `schema.py`:
     import graphene
     from facebook_login import schema as fb_login
@@ -117,7 +117,9 @@ This should be your Facebook app secret.
 Set this to your own function in case you need to do additional things
 when a user logs in. You can find our original implementation in `utils.success_handler_default()`.
 
-Your custom function may return anything that can be passed into `json.dumps()`.
+Your custom function may return a string and that string would be passed on
+to the frontend by the mutation as the `extra` key. You will most likely want
+to return something like this: `json.dumps({'token': 'ABC123...'})`.
 If you do return something (i.e. a JWT token), then the mutation will return
 it to the frontend as the `extra` key.
 
