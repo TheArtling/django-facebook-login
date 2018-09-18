@@ -18,7 +18,7 @@ class FacebookAuthMutation(graphene.Mutation):
 
     status = graphene.Int()
     form_errors = graphene.String()
-    extra = graphene.types.json.JSONString()
+    extra = graphene.String()
 
     @staticmethod
     def mutate(root, info, **args):
@@ -49,7 +49,6 @@ class FacebookAuthMutation(graphene.Mutation):
             )
 
         extra = success_handler(info.context, user)
-        extra = json.dumps(extra) if extra else None
 
         return FacebookAuthMutation(status=200, form_errors=None, extra=extra)
 

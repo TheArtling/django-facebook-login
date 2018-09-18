@@ -1,4 +1,5 @@
 import responses
+import json
 
 from django.contrib.auth import login
 from django.contrib.auth.models import AnonymousUser
@@ -89,4 +90,4 @@ def setup_debug_token_responses_error():
 
 def custom_success_handler(request, user):
     login(request, user)
-    return {'extra': 'token'}
+    return json.dumps({'extra': 'token'})
