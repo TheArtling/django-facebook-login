@@ -3,7 +3,7 @@ import facebook_login
 
 from setuptools import find_packages, setup
 
-with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
+with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
     README = readme.read()
 
 # allow setup.py to be run from any path
@@ -29,6 +29,7 @@ setup(
     description=
     'A GraphQL endpoint and authentication backend to signup or login a valid user access token from Facebook',
     long_description=README,
+    long_description_content_type='text/markdown',
     url='https://github.com/theartling/django-facebook-login/',
     author='Martin Brochhaus',
     author_email='mbrochh@gmail.com',
