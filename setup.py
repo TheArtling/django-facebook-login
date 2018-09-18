@@ -1,4 +1,6 @@
 import os
+import facebook_login
+
 from setuptools import find_packages, setup
 
 with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
@@ -20,7 +22,7 @@ dev_requires = [
 
 setup(
     name='django-facebook-login',
-    version='0.1',
+    version=facebook_login.__version__,
     packages=find_packages(),
     include_package_data=True,
     license='MIT License',
