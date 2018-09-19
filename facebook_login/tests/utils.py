@@ -21,6 +21,16 @@ class InfoFactory(object):
         self.context.session.save()
 
 
+def add_response(url, json_response, status=200):
+    """Helper function to add a response to responses."""
+    responses.add(
+        responses.GET,
+        url,
+        json=json_response,
+        status=status,
+        match_querystring=False)
+
+
 def get_request():
     req = RequestFactory().get('/')
     SessionMiddleware().process_request(req)
