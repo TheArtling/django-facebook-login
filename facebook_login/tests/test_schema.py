@@ -6,29 +6,38 @@ from .. import schema
 
 pytestmark = pytest.mark.django_db
 
+URLS = utils.URLS
+
 
 class TestFacebookAuthMutation:
 
-    @responses.activate
-    def test_mutate(self):
+    def test_mutate_no_token(self):
         m = schema.FacebookAuthMutation()
-        utils.setup_access_token_responses()
-        utils.setup_debug_token_responses_success()
         info = utils.InfoFactory()
         res = m.mutate(None, info)
-        assert res.status == 400, ('Should return 400 if no email was given')
+        assert res.status == 400, ('Should return 400 if no token was given')
 
-        res = m.mutate(None, info, email='test@example.com')
-        assert res.status == 400, (
-            'Should return 400 if the Facebook login failed (i.e. becuase no'
-            ' token or an invalid token was given)')
+    @responses.activate
+    def test_mutate_bad_token(self):
+        m = schema.FacebookAuthMutation()
+        info = utils.InfoFactory()
 
-        res = m.mutate(
-            None, info, email='test@example.com', access_token='test-token')
+        utils.add_response(URLS['access'], {'access_token': 'asd'})
+        utils.add_response(URLS['debug'], {'error': 'Bad token'})
+        res = m.mutate(None, info, access_token='bad-token')
+        assert res.status == 400, ('Should return 400 if bad token was given')
 
+    @responses.activate
+    def test_mutate_valid_token(self):
+        m = schema.FacebookAuthMutation()
+        info = utils.InfoFactory()
+
+        utils.add_response(URLS['access'], {'access_token': 'asd'})
+        utils.add_response(URLS['debug'], {'data': {'user_id': '123'}})
+        utils.add_response(URLS['me'], {'email': 'test@example.com'})
+        res = m.mutate(None, info, access_token='test-token')
         assert res.status == 200, (
             'Should return 200 if the Facebook login succeeded')
-
         assert res.extra is None, (
             'Should return None if success handler not specified')
 
@@ -40,8 +49,10 @@ class TestFacebookAuthMutation:
         settings.SUCCESS_HANDLER = 'facebook_login.tests.utils.custom_success_handler'
 
         m = schema.FacebookAuthMutation()
-        utils.setup_access_token_responses()
-        utils.setup_debug_token_responses_success()
+
+        utils.add_response(URLS['access'], {'access_token': 'asd'})
+        utils.add_response(URLS['debug'], {'data': {'user_id': '123'}})
+        utils.add_response(URLS['me'], {'email': 'test@example.com'})
         info = utils.InfoFactory()
 
         res = m.mutate(
