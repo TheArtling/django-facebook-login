@@ -5,6 +5,7 @@ from invoke import run
 @task
 def test(c):
     run('py.test -s'
+        ' --color=yes'
         ' --cov facebook_login'
         ' --cov-report term'
         ' --cov-report html'
