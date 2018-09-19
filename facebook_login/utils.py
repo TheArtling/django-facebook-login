@@ -51,3 +51,13 @@ def debug_token(user_access_token, app_access_token):
                         f'input_token={user_access_token}&'
                         f'access_token={app_access_token}')
     return resp.json()
+
+
+def get_user_email(user_access_token):
+    """
+    Given a valid user access token, it will return the user's email.
+
+    """
+    resp = requests.get(f'{settings.API_BASE_URL}/me?'
+                        f'access_token={user_access_token}&fields=email')
+    return resp.json().get('email', None)
