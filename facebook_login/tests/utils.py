@@ -8,6 +8,13 @@ from django.test import RequestFactory
 
 from .. import settings
 
+BASE_URL = settings.API_BASE_URL
+URLS = {
+    'access': f'{BASE_URL}/oauth/access_token',
+    'debug': f'{BASE_URL}/debug_token',
+    'me': f'{BASE_URL}/me'
+}
+
 
 class InfoFactory(object):
     context = None
