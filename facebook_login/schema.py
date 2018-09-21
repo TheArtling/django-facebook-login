@@ -7,7 +7,7 @@ import requests
 from django.contrib.auth import authenticate, get_user_model
 
 from .models import FacebookAccount
-from .utils import debug_token, get_app_access_token, success_handler
+from . import utils
 
 
 class FacebookAuthMutation(graphene.Mutation):
@@ -32,18 +32,12 @@ class FacebookAuthMutation(graphene.Mutation):
                 extra=None,
             )
 
-        user = authenticate(request=info.context, token=user_access_token)
+        try:
+            user = authenticate(request=info.context, token=user_access_token)
+        except Exception as ex:
+            return utils.error_handler(FacebookAuthMutation, info.context, ex)
 
-        if user is None:
-            return FacebookAuthMutation(
-                status=400,
-                form_errors=json.dumps({
-                    'facebook': ['Facebook login failed.']
-                }),
-                extra=None,
-            )
-
-        extra = success_handler(info.context, user)
+        extra = utils.success_handler(info.context, user)
 
         return FacebookAuthMutation(status=200, form_errors=None, extra=extra)
 

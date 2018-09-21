@@ -40,13 +40,9 @@ class FacebookAuthBackend:
 
         # Use app access token to debug the user access token
         token_info = debug_token(token, app_access_token)
-        if token_info.get('error'):
-            return None
 
         # Now that the token is validated, use that token to get the email
         email = get_user_email(token)
-        if email is None:
-            return None
 
         # Step1: See if we already know this Facebook user...
         user_id = token_info['data']['user_id']

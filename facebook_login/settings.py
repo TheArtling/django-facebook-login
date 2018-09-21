@@ -8,5 +8,8 @@ APP_SECRET = settings.FB_LOGIN_APP_SECRET
 API_BASE_URL = getattr(settings, 'FB_LOGIN_API_BASE_URL',
                        'https://graph.facebook.com/v3.1')
 
+ERROR_HANDLER = getattr(settings, 'FB_LOGIN_ERROR_HANDLER',
+                        'facebook_login.utils.error_handler_default')
+
 SUCCESS_HANDLER = getattr(settings, 'FB_LOGIN_SUCCESS_HANDLER',
                           'facebook_login.utils.success_handler_default')

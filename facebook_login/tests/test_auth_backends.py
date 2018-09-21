@@ -8,6 +8,7 @@ from . import utils as test_utils
 from .. import settings
 from .. import auth_backends
 from .. import models
+from .. import exceptions
 
 pytestmark = pytest.mark.django_db
 
@@ -26,13 +27,15 @@ class TestFacebookAuthBackend:
     @responses.activate
     def test_authenticate_bad_token(self):
         test_utils.add_response(URLS['access'], {'access_token': 'asd'})
-        test_utils.add_response(URLS['debug'], {'error': 'Bad Token'})
+        test_utils.add_response(URLS['debug'],
+                                {'error': {
+                                    'message': 'Bad Token'
+                                }})
         backend = auth_backends.FacebookAuthBackend()
         req = test_utils.get_request()
 
-        result = backend.authenticate(req, token='test-user-token')
-        assert result is None, (
-            'Should return `None` if an invalid token was given')
+        with pytest.raises(exceptions.FacebookRequestException):
+            backend.authenticate(req, token='test-user-token')
 
     @responses.activate
     def test_authenticate_no_email_permission(self):
@@ -42,9 +45,8 @@ class TestFacebookAuthBackend:
         backend = auth_backends.FacebookAuthBackend()
         req = test_utils.get_request()
 
-        result = backend.authenticate(req, token='test-user-token')
-        assert result is None, (
-            'Should return `None` if no email was returned by Facebook')
+        with pytest.raises(exceptions.UserEmailException):
+            result = backend.authenticate(req, token='test-user-token')
 
     @responses.activate
     def test_authenticate_known_facebook_user(self):

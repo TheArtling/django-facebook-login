@@ -23,7 +23,7 @@ class TestFacebookAuthMutation:
         info = utils.InfoFactory()
 
         utils.add_response(URLS['access'], {'access_token': 'asd'})
-        utils.add_response(URLS['debug'], {'error': 'Bad token'})
+        utils.add_response(URLS['debug'], {'error': {'message': 'Bad token'}})
         res = m.mutate(None, info, access_token='bad-token')
         assert res.status == 400, ('Should return 400 if bad token was given')
 
