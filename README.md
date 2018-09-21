@@ -56,7 +56,7 @@ library.
     schema = graphene.Schema(query=Queries, mutation=Mutation)
     ```
 
-1.  Run `python manage.py migrate` to create the FacebookAccount table.
+1.  Run `python manage.py migrate` to create the `FacebookAccount` table.
 
 1.  Configure the app in your `local_settings.py`:
 
@@ -122,6 +122,42 @@ to the frontend by the mutation as the `extra` key. You will most likely want
 to return something like this: `json.dumps({'token': 'ABC123...'})`.
 If you do return something (i.e. a JWT token), then the mutation will return
 it to the frontend as the `extra` key.
+
+## FB_LOGIN_ERROR_HANDLER (optional)
+
+**Default**: `facebook_login.utils.error_handler_default`
+
+Set this to your own function, for example if you would like to log certain
+exceptions to Sentry or alert you in other ways when Facebook login attempts
+are crashing. By default, only the user will see error messages on the frontend
+but you will likely not notice that something is wrong.
+
+Your implementation should look something like this:
+
+```
+from facebook_login import exceptions
+
+def error_handler_custom(facebook_auth_mutation, request, exception):
+    message = ''
+    if isinstance(exception, exceptions.UserEmailException):
+        message = str(exception)
+    else:
+        message = ('Failed to login with Facebook. Our engineers have been'
+                   ' notified. Please try again, later.')
+
+    # log exception to Sentry
+
+    return facebook_auth_mutation(
+        status=400,
+        form_errors=json.dumps({
+            'facebook': [message]
+        }),
+        extra=None,
+    )
+```
+
+As you can see, this way you can customize the error messages that are shown
+to the user and you can use any logging service that you like.
 
 ## FB_LOGIN_API_BASE_URL (optional)
 
