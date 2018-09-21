@@ -12,7 +12,7 @@ class FacebookAccount(models.Model):
     """
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    fb_user_id = models.CharField(max_length=1024)
+    fb_user_id = models.CharField(unique=True, max_length=1024)
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
