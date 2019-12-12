@@ -110,6 +110,15 @@ This should be your Facebook app-id.
 
 This should be your Facebook app secret.
 
+## FB_LOGIN_GRAPH_VERSION (optional)
+
+**Default**: `'v5.0'`
+
+You can set this to a higher version in order to stay compliant with the
+Facebook guidelines. Of course, just bumping the version number does not
+guarantee that this app will still work, but the APIs that we use here have
+been pretty stable for years, so it might just work.
+
 ## FB_LOGIN_SUCCESS_HANDLER (optional)
 
 **Default**: `facebook_login.utils.success_handler_default`
