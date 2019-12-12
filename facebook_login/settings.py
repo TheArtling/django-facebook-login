@@ -5,8 +5,10 @@ APP_ID = settings.FB_LOGIN_APP_ID
 APP_SECRET = settings.FB_LOGIN_APP_SECRET
 
 # Optional settings that can be overridden by the user:
+GRAPH_VERSION = getattr(settings, 'FB_LOGIN_GRAPH_VERSION', 'v5.0')
+
 API_BASE_URL = getattr(settings, 'FB_LOGIN_API_BASE_URL',
-                       'https://graph.facebook.com/v3.1')
+                       f'https://graph.facebook.com/{GRAPH_VERSION}')
 
 ERROR_HANDLER = getattr(settings, 'FB_LOGIN_ERROR_HANDLER',
                         'facebook_login.utils.error_handler_default')
