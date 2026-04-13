@@ -2,6 +2,6 @@ fabric==2.4.0
 mixer==6.0.1
 pytest-cov==2.5.1
 pytest-django==3.4.2
-pytest==3.8.0
+pytest==9.0.3
 responses==0.9.0
 twine==1.11.0
